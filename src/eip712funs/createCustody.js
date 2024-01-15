@@ -1,11 +1,21 @@
 import { sendAsync } from "./sendAsync";
 
-export async function delegation(web3, accounts, contract) {
+export async function createCustody(web3, accounts, contract) {
     var signer = accounts[0];
-    var amount = "100000000ukex";
-    var delegateParam = {
-      "amount": "100000000ukex",
-      "to": "kiravaloper13j3w9pdc47e54z2gj4uh37rnnfwxcfcmjh4ful"
+    var identityParam = {
+      "custody_settings" : {
+        "custody_enabled" : true,
+        "custody_mode" : 1,
+        "use_password" : true,
+        "use_white_list" : true,
+        "use_limits" : false,
+        "key" : "key",
+        "next_controller" : "12345"
+      },
+      "old_key" : "old_key",
+      "new_key" : "new_key",
+      "next" : "next",
+      "target" : "target",
     }
 
     web3.currentProvider.sendAsync({
@@ -27,14 +37,14 @@ export async function delegation(web3, accounts, contract) {
             {name:"version",type:"string"},
             {name:"chainId",type:"uint256"},
           ],
-          delegate:[
+          createCustody:[
             {name:"param",type:"string"}
           ]
         },
         //make sure to replace verifyingContract with address of deployed contract
-        primaryType:"delegate",
+        primaryType:"createCustody",
         message:{
-          param: JSON.stringify(delegateParam),
+          param: JSON.stringify(identityParam),
         }
       })
 
@@ -46,6 +56,6 @@ export async function delegation(web3, accounts, contract) {
       var method = 'eth_signTypedData_v4'
     
       sendAsync(web3, method, params, from, 
-        async(v, r, s) => await contract.methods.delegation(v,r,s,signer, JSON.stringify(delegateParam)).send({ from: accounts[0] }))
+        async(v, r, s) => await contract.methods.createCustody(v,r,s,signer, JSON.stringify(identityParam)).send({ from: accounts[0] }))
     })
 }

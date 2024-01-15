@@ -1,11 +1,18 @@
 import { sendAsync } from "./sendAsync";
 
-export async function delegation(web3, accounts, contract) {
+export async function registerIdentityRecords(web3, accounts, contract) {
     var signer = accounts[0];
-    var amount = "100000000ukex";
-    var delegateParam = {
-      "amount": "100000000ukex",
-      "to": "kiravaloper13j3w9pdc47e54z2gj4uh37rnnfwxcfcmjh4ful"
+    var identityParam = {
+      "identity_infos" : [
+        {
+          "key" : "key1",
+          "info" : "info1"
+        },
+        {
+          "key" : "key2",
+          "info" : "info2"
+        }
+      ]
     }
 
     web3.currentProvider.sendAsync({
@@ -27,14 +34,14 @@ export async function delegation(web3, accounts, contract) {
             {name:"version",type:"string"},
             {name:"chainId",type:"uint256"},
           ],
-          delegate:[
+          registerIdentityRecords:[
             {name:"param",type:"string"}
           ]
         },
         //make sure to replace verifyingContract with address of deployed contract
-        primaryType:"delegate",
+        primaryType:"registerIdentityRecords",
         message:{
-          param: JSON.stringify(delegateParam),
+          param: JSON.stringify(identityParam),
         }
       })
 
@@ -46,6 +53,6 @@ export async function delegation(web3, accounts, contract) {
       var method = 'eth_signTypedData_v4'
     
       sendAsync(web3, method, params, from, 
-        async(v, r, s) => await contract.methods.delegation(v,r,s,signer, JSON.stringify(delegateParam)).send({ from: accounts[0] }))
+        async(v, r, s) => await contract.methods.registerIdentityRecords(v,r,s,signer, JSON.stringify(identityParam)).send({ from: accounts[0] }))
     })
 }

@@ -3,6 +3,13 @@ import SimpleStorageContract from "./contracts/SimpleStorage.json";
 import getWeb3 from "./getWeb3";
 import "./App.css";
 import { delegation } from "./eip712funs/delegate";
+import { upsertTokenAlias } from "./eip712funs/upsertTokenAlias";
+import { createCustody } from "./eip712funs/createCustody";
+import { submitEvidence } from "./eip712funs/submitEvidence";
+import { registerIdentityRecords } from "./eip712funs/registerIdentityRecords";
+import { requestIdentityRecordsVerify } from "./eip712funs/requestIdentityRecordsVerify";
+import { setNetworkProperties } from "./eip712funs/setNetworkProperties";
+import { createSpendingPool } from "./eip712funs/createSpendingPool";
 
 var ethUtil = require('ethereumjs-util');
 var sigUtil = require('eth-sig-util');
@@ -51,6 +58,41 @@ class App extends Component {
     await delegation(web3, accounts, contract)
   }
 
+  upsertTokenAlias = async () => {
+    const { web3, accounts, contract } = this.state;
+    await upsertTokenAlias(web3, accounts, contract)
+  }
+
+  createCustody = async () => {
+    const { web3, accounts, contract } = this.state;
+    await createCustody(web3, accounts, contract)
+  }
+
+  submitEvidence = async () => {
+    const { web3, accounts, contract } = this.state;
+    await submitEvidence(web3, accounts, contract)
+  }
+
+  registerIdentityRecords = async () => {
+    const { web3, accounts, contract } = this.state;
+    await registerIdentityRecords(web3, accounts, contract)
+  }
+
+  requestIdentityRecordsVerify = async () => {
+    const { web3, accounts, contract } = this.state;
+    await requestIdentityRecordsVerify(web3, accounts, contract)
+  }
+
+  setNetworkProperties = async () => {
+    const { web3, accounts, contract } = this.state;
+    await setNetworkProperties(web3, accounts, contract)
+  }
+
+  createSpendingPool = async () => {
+    const { web3, accounts, contract } = this.state;
+    await createSpendingPool(web3, accounts, contract)
+  }
+
   render() {
     if (!this.state.web3) {
       return <div>Loading Web3, accounts, and contract...</div>;
@@ -63,6 +105,12 @@ class App extends Component {
         </p>
         <div className="button-container">
           <button className="button" onClick={() => this.delegate()}> Delegate </button>
+          <button className="button" onClick={() => this.upsertTokenAlias()}> UpsertTokenAlias </button>
+          <button className="button" onClick={() => this.createCustody()}> CreateCustody </button>
+          <button className="button" onClick={() => this.submitEvidence()}> SubmitEvidence </button>
+          <button className="button" onClick={() => this.requestIdentityRecordsVerify()}> RequestIdentityRecordsVerify </button>
+          <button className="button" onClick={() => this.setNetworkProperties()}> SetNetworkProperties </button>
+          <button className="button" onClick={() => this.createSpendingPool()}> CreateSpendingPool </button>
         </div>
       </div>
     );
